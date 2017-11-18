@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+/*
+1. ASIDE
+2. MAIN
+*/
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	min-height: 100%;
+	position: relative;
+}
+
+body {
+	background-color: #429488;
+	height: 100%;
+	font-family: 'Montserrat', sans-serif;
+}
+
+ul li {
+	list-style: none;
+}
+
+#container {
+	background-color: black;
+	max-width: 1024px;
+	margin: auto;
+	position: absolute;
+	top: 3%;
+	bottom: 3%;
+	left: 0;
+	right: 0;
+}
+
+aside {
+	float: left;
+	background-color: #FEFEFE;
+	width: 35%;
+	height: 100%;
+}
+
+main {
+	float: right;
+	width: 65%;
+	height: 100%;
+	background-color: grey;
+}
+
+img{
+	border-radius: 100px;
+}
+
+/* 1. ASIDE */
+
+.profile-bar{
+	height: 15%;
+	min-height: 100px;
+	background-color: #E4E4E4;
+}
+
+.profile-picture {
+	float: left;
+	width: 10%;
+}
+
+.new-message{
+	width: 10%;
+	float: right;
+}
+
+.fa-comment {
+	color: grey;
+}
+
+.search-bar {
+	clear: both;
+	height: 7%;
+	min-height: 45px;
+	background-color: #FBFBFB;
+}
+
+#search{
+	width: 100%;
+}
+
+.chat-list ul {
+	padding: 0;
+}
+
+.chat-list ul li {
+	display: inline-block;
+}
+
+.chat-list ul li:hover {
+	background-color: #E9EAEC;
+}
+
+.contact-profile-picture{
+	float: left;
+	width: 10%;
+	padding: 5px;
+}
+
+.contact-profile-picture img {
+	width: 100%;
+}
+
+.chat-contact {
+	float: left;
+	width: 65%;
+	margin: 0;
+	padding: 6px;
+}
+
+.time{
+	float: left;
+	width: 15%;
+	padding: 6px;
+}
+
+/* 2. MAIN */
+
+.chat-details {
+	background-color: #E4E4E4;
+	width: 100%;
+	min-height: 100px;
+	height: 15%;
+}
+
+.chat-window {
+	background-color: #DCD5D2;
+	width: 100%;
+	min-height: 0;
+	height: 70%;
+}
+
+.new-message-bar {
+	background-color: #E4E4E4;
+	clear: both;
+	width: 100%;
+	min-height: 100px;
+	height: 15%;
+	position: sticky;
+	bottom: 3%;
+}
