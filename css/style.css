@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat');
+@import url('https://fonts.googleapis.com/css?family=Muli');
 
 /*
 1. ASIDE
@@ -17,7 +17,13 @@ html {
 body {
 	background-color: #429488;
 	height: 100%;
-	font-family: 'Montserrat', sans-serif;
+	font-family: 'Muli', sans-serif;
+	font-size: 14px;
+}
+
+ul {
+	margin: 0;
+	cursor: pointer;
 }
 
 ul li {
@@ -26,25 +32,26 @@ ul li {
 
 #container {
 	background-color: black;
-	max-width: 1024px;
+	max-width: 1180px;
 	margin: auto;
 	position: absolute;
 	top: 3%;
 	bottom: 3%;
 	left: 0;
 	right: 0;
+	
 }
 
 aside {
 	float: left;
 	background-color: #FEFEFE;
-	width: 35%;
+	width: 30%;
 	height: 100%;
 }
 
 main {
 	float: right;
-	width: 65%;
+	width: 70%;
 	height: 100%;
 	background-color: grey;
 }
@@ -56,14 +63,16 @@ img{
 /* 1. ASIDE */
 
 .profile-bar{
-	height: 15%;
-	min-height: 100px;
+	height: 10%;
+	min-height: 75px;
 	background-color: #E4E4E4;
+	border-bottom: 1px solid #DCD9D9;
+	padding: 15px;
 }
 
 .profile-picture {
 	float: left;
-	width: 10%;
+	width: 15%;
 }
 
 .new-message{
@@ -71,19 +80,26 @@ img{
 	float: right;
 }
 
-.fa-comment {
-	color: grey;
-}
-
 .search-bar {
 	clear: both;
 	height: 7%;
 	min-height: 45px;
-	background-color: #FBFBFB;
+	background-color: #FAFAFA;
 }
 
 #search{
-	width: 100%;
+	width:90%;
+	height: 70%;
+	margin: 2% 5% 2% 5%;
+	border: 1px solid #BFBFBF;
+	text-decoration-color: #9B9B9B;
+	font-size: 15px;
+	padding: 10px;
+	color: grey;
+}
+
+.chat-list{
+	overflow: auto;
 }
 
 .chat-list ul {
@@ -92,57 +108,144 @@ img{
 
 .chat-list ul li {
 	display: inline-block;
+
 }
 
 .chat-list ul li:hover {
 	background-color: #E9EAEC;
 }
 
-.contact-profile-picture{
+.contact-profile-picture-left {
 	float: left;
-	width: 10%;
+	width: 15%;
 	padding: 5px;
 }
 
-.contact-profile-picture img {
+.contact-profile-picture-main {
+	float: left;
+	width: 8%;
+	padding: 5px;
+}
+
+.contact-profile-picture-left img {
 	width: 100%;
+}
+
+.contact-profile-picture-main img {
+	width: 100%;
+}
+
+.chat-details {
+	background-color: #E4E4E4;
+	width: 100%;
+	min-height: 75px;
+	height: 10%;
+	border: 1px solid #DCD9D9;
+}
+
+.chat-box {
+	border-bottom: 0.5px solid rgb(243,243,243);
+	float: left;
+	width: 85%;
+	margin: 0;
+	padding: 6px;
 }
 
 .chat-contact {
 	float: left;
 	width: 65%;
-	margin: 0;
-	padding: 6px;
 }
 
 .time{
 	float: left;
-	width: 15%;
+	width: 35%;
 	padding: 6px;
+	color: grey;
 }
 
 /* 2. MAIN */
 
-.chat-details {
-	background-color: #E4E4E4;
-	width: 100%;
-	min-height: 100px;
-	height: 15%;
+
+.contact-name {
+	font-weight: bold;
+}
+
+.last-chat-message {
+	color: grey;
+}
+
+.chat-status {
+	float: left;
+	padding: 10px;
+}
+
+.contact-online-status {
+	color: grey;
+}
+
+.chat-attach-file {
+	float: right;
+	width: 10%;
+	padding: 15px;
 }
 
 .chat-window {
 	background-color: #DCD5D2;
 	width: 100%;
 	min-height: 0;
-	height: 70%;
+	height: 80%;
+	overflow: auto;
+	padding: 15px;
+	background-image: url("../images/chat-background.jpg");
+	background-repeat: repeat-x;
 }
+
+/* Scroll-bar */
+/*---------------------------------*/
+.chat-window::-webkit-scrollbar {
+    width: 0.5em;
+}
+ 
+.chat-window::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
+/*---------------------------------*/
 
 .new-message-bar {
 	background-color: #E4E4E4;
 	clear: both;
 	width: 100%;
-	min-height: 100px;
-	height: 15%;
+	min-height: 60px;
+	height: 5%;
 	position: sticky;
 	bottom: 3%;
+}
+
+.type-new-message{
+	width: 90%;
+	height: 70%;
+	margin: 1%;
+	float: left;
+	padding: 8px;
+	font-size: 14px;
+	color: #303030;
+	border: 1px solid #BFBFBF;
+}
+
+.send-new-message {
+	float: left;
+	width: 5%;
+	height: 100%;
+	margin-top: 1.2%;
+}
+
+/* Font awesome */
+
+.fa-paper-plane {
+	color: #429488;
+}
+
+.fa-comment, .fa-comments, .fa-paperclip {
+	color: grey;
 }
