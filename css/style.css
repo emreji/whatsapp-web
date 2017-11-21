@@ -200,6 +200,51 @@ img{
 	background-repeat: repeat-x;
 }
 
+.chat-bubble {
+	display: block;
+	clear: both;
+	margin-bottom: 10px;
+	height: auto;
+	max-width: 60%;
+}
+
+.chat-bubble-received {
+	float: left;
+}
+
+.chat-bubble-sent {
+	float: right;
+}
+
+.chat-bubble-received span {
+	padding: 5px;
+	display: inline-block;
+	background-color: white;
+	border-radius: 5px;
+}
+
+.chat-bubble-received div {
+	color: grey;
+	font-size: smaller;
+	text-align: right;
+	padding: 5px;
+}
+
+.chat-bubble-sent span {
+	padding: 5px;
+	display: inline-block;
+	background-color: #75B17D;
+	color: white;
+	border-radius: 5px;
+}
+
+.chat-bubble-sent div {
+	color: white;
+	font-size: smaller;
+	text-align: right;
+	padding: 5px;
+}
+
 /* Scroll-bar */
 /*---------------------------------*/
 .chat-window::-webkit-scrollbar {
@@ -237,7 +282,7 @@ img{
 	float: left;
 	width: 5%;
 	height: 100%;
-	margin-top: 1.2%;
+	margin-top: 1.8%;
 }
 
 /* Font awesome */

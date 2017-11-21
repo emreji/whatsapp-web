@@ -2,8 +2,12 @@
 <html>
 <head>
 	<title>Whatsapp</title>
+	<link rel="icon" type="image/png" href="images/icon.png">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<script type="text/javascript" src="js/server.js" defer></script>
+	<script type="text/javascript" src="js/script.js" defer></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
 	<div id="container">
@@ -64,53 +68,37 @@
 					<a href="#"><i class="fa fa-paperclip fa-2x" aria-hidden="true"></i></a>
 				</div>
 			</div>
-			<div class="chat-window">
-				<div>First</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Hello</div>
-				<div>Last</div>
+			<div class="chat-window" id="chat-window">
+				<div class="chat-bubble chat-bubble-received">
+					<span>
+						First
+						<div>11:59 PM</div>
+					</span>
+				</div>
+				<div class="chat-bubble chat-bubble-received">
+					<span>
+						Hello World
+						<div>11:59 PM</div>
+					</span>
+				</div>
+				<div class="chat-bubble chat-bubble-received">
+					<span>
+						Good seeing you today!
+						<div>11:59 PM</div>
+					</span>
+				</div>
+				<div class="chat-bubble chat-bubble-sent">
+					<span>
+						Good night
+						<div>12:00 AM</div>
+					</span>
+				</div>
 			</div>
 			<div class="new-message-bar">
 				<div class="smiley"></div>
-				<input type="text" class="type-new-message">
+				<input type="text" id="new-message" class="type-new-message" onkeydown = "if (event.keyCode == 13) sendMessage()" autofocus>
 				<div class="send-new-message">
-					<a href=""><i class="fa fa-paper-plane fa-2x" aria-hidden="true"></i></a>
+					<a onclick="sendMessage()"><i class="fa fa-paper-plane fa-2x" aria-hidden="true"></i></a>
 				</div>
 			</div>
 		</main>
