@@ -5,9 +5,13 @@
 	<link rel="icon" type="image/png" href="images/icon.png">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<link rel="stylesheet" href="css/font-awesome.min.css">
-	<script type="text/javascript" src="index.js" defer></script>
-	<script type="text/javascript" src="js/script.js" defer></script>
+	<script type="text/javascript" src="socket.io/socket.io.js"></script>
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="js/script.js"></script>
+	<script>
+		var socket =io();
+		
+	</script>
 </head>
 <body>
 	<div id="container">
@@ -69,7 +73,7 @@
 				</div>
 			</div>
 			<div class="chat-window" id="chat-window">
-				<div class="chat-bubble chat-bubble-received">
+				<!-- <div class="chat-bubble chat-bubble-received">
 					<span>
 						First
 						<div>11:59 PM</div>
@@ -92,7 +96,7 @@
 						Good night
 						<div>12:00 AM</div>
 					</span>
-				</div>
+				</div> -->
 			</div>
 			<div class="new-message-bar">
 				<div class="smiley"></div>
