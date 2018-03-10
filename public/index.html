@@ -7,17 +7,15 @@
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<script type="text/javascript" src="socket.io/socket.io.js"></script>
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="js/SocketManager.js"></script>
 	<script type="text/javascript" src="js/script.js"></script>
-	<script>
-		var socket =io();
-		
-	</script>
 </head>
 <body>
 	<div id="container">
 		<aside>
 			<div class="profile-bar">
 				<img src="images/profile-picture.jpg" class="profile-picture">
+				<div id="user"></div>
 				<div class="new-message">
 					<a href="#"><i class="fa fa-comments fa-2x" aria-hidden="true"></i></a>
 				</div>

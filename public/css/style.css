@@ -83,6 +83,16 @@ img{
 	width: 15%;
 }
 
+.profile-picture, #user {
+	display: inline-block;
+}
+
+#user {
+	width: 50%;
+    margin-top: 3%;
+    margin-left: 2%;
+}
+
 .new-message{
 	width: 10%;
 	float: right;
