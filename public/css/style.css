@@ -5,14 +5,22 @@
 2. MAIN
 */
 
-* {
+html {
+	box-sizing: border-box;
+}
+
+*, *::before, *::after {
+	box-sizing: inherit;
+}
+
+/** {
 	box-sizing: border-box;
 }
 
 html {
 	min-height: 100%;
 	position: relative;
-}
+}*/
 
 body {
 	background-color: #429488;
