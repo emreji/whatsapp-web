@@ -1,33 +1,67 @@
+//import { WhatsAppUser } from './WhatsAppUser';
+
 const express = require('express');
 const http = require('http');
 
 let app = express();
 let server = http.createServer(app);
 let io = require('socket.io')(server);
-users = [];
+let WhatsAppUser = require('./WhatsAppUser');
+
 app.use(express.static(__dirname + "/public"));
 app.use(express.static(__dirname + '/node_modules'));
+
+var loggedInUsers = []; // array of 'WhatsAppUser's who are logged in
 
 app.get('/', function (req, res) {
     res.sendFile(__dirname + "/public/index.html");
  });
 
 io.on('connection', function(socket) {
-    console.log('socket connected!');
+    console.log("New User Connected [Id: " + socket.id + "] " + loggedInUsers.length + " users are loggedIn right now.");
 
     socket.on('disconnect', function() {
-        console.log('User disconnected.');
+        var userIndex = -1;
+        for(var i = 0, len = loggedInUsers.length; i < len; i++) {
+            if (loggedInUsers[i].id === socket.id) {
+                userIndex = i;
+                break;
+            }
+        }
+
+        var disconnectedUser = loggedInUsers[userIndex];
+        loggedInUsers.splice (userIndex, 1);
+        if (disconnectedUser != null) {
+            console.log(disconnectedUser.userName + ' is disconnected. ' + loggedInUsers.length + " users are loggedIn right now.");
+        }
+
+        var allUsers = [];
+            loggedInUsers.forEach(user => {
+                allUsers.push(user.getJSON());
+        });
+
+        io.sockets.emit("refreshContactList", allUsers);
     });
 
-    socket.on('setUsername', function (username) {
-        if(users.indexOf(username) > -1) {
-            socket.emit('userExists', username + ' username already taken. Please choose a different username!'); 
+    socket.on('login', function (user) {
+        var whatsAppUser = new WhatsAppUser(socket.id, user.userName, user.phoneNumber);
+        
+        if (loggedInUsers.includes(whatsAppUser)) {
+            console.log(whatsAppUser.userName + " already exist");
+            socket.emit("loginFailure", { "error": "UserName already taken. Please choose a different username!" }); 
         } else {
-            users.push(username);
-            console.log(users);
-            socket.emit('userSet', {username: username});
+            loggedInUsers.push(whatsAppUser);
+            console.log("Welcome " + whatsAppUser.userName + ". In total " + loggedInUsers.length + " users are logged in.");
+            socket.emit("loginSuccess", whatsAppUser.getJSON());
+
+            var allUsers = [];
+            loggedInUsers.forEach(user => {
+                allUsers.push(user.getJSON());
+            });
+
+            io.sockets.emit("refreshContactList", allUsers);
         }
-    })
+    });
 
     socket.on('msg', function(data) {
         io.sockets.emit('newmsg', data);

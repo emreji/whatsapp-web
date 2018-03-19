@@ -4,10 +4,11 @@ var socketManager = new SocketManager();
 promptUsername();
 
 function promptUsername() {
-	while(userInput == null || userInput == "") {
-		var userInput = this.prompt("Please enter your name");
-		socketManager.newUser(userInput, function(user) {
-			document.getElementById("user").innerHTML = user.username;
+	while(userName == null || userName == "") {
+		var userName = this.prompt("Please enter your name");
+		var newUser = new User(userName, "416-312-1932");
+		socketManager.login(newUser, function(user) {
+			document.getElementById("user").innerHTML = user.userName;
 		}, function(error) {
 			alert(error);
 		});
@@ -41,7 +42,62 @@ var displayMessage = function(message) {
 	$('#new-message').val("");
 }
 
+var refreshContactList = function(contacts) {
+	var chatList = document.getElementById("chat-list-ul");
+	chatList.innerHTML = '';
+
+	contacts.forEach(contact => {
+		var loggedInUser = createChatContact(contact.userName);
+		loggedInUser.user = contact;
+
+		loggedInUser.addEventListener("click", function() {
+			console.log(this);
+		});
+
+		chatList.appendChild(loggedInUser);
+	});
+}
+
 socketManager.receiveMessage(displayMessage);
+socketManager.updateContactList(refreshContactList);
+
+function createChatContact(name) {
+	var li = document.createElement('li');
+
+	var contactImageDiv = document.createElement('div');
+	contactImageDiv.className = "contact-profile-picture-left";
+
+	var contactImage = document.createElement("img");
+	contactImage.src = "images/contact-profile-picture.jpg";
+
+	contactImageDiv.appendChild(contactImage);
+
+	var chatBoxDiv = document.createElement('div');
+	chatBoxDiv.className = "chat-box";
+	
+	var chatContactDiv = document.createElement('div');
+	chatContactDiv.className = "chat-contact";
+
+	var chatContactNameDiv = document.createElement('div');
+	chatContactNameDiv.className = "contact-name";
+	chatContactNameDiv.innerHTML = name;
+
+	var lastChatMessageDiv = document.createElement('div');
+	lastChatMessageDiv.className = "last-chat-message";
+	lastChatMessageDiv.innerHTML = "Hi";
+
+	var chatTimeDiv = document.createElement('div');
+	chatTimeDiv.className = "time";
+	
+	chatContactDiv.appendChild(chatContactNameDiv);
+	chatContactDiv.appendChild(lastChatMessageDiv);
+	chatBoxDiv.appendChild(chatContactDiv);
+	chatBoxDiv.appendChild(chatTimeDiv);
+
+	li.appendChild(contactImageDiv);
+	li.appendChild(chatBoxDiv);
+	return li;
+}
 
 function scrollToBottomOfChatWindow() {
 	var chatWindow = document.getElementById("chat-window");

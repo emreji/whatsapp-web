@@ -8,6 +8,7 @@
 	<script type="text/javascript" src="socket.io/socket.io.js"></script>
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
 	<script type="text/javascript" src="js/SocketManager.js"></script>
+	<script type="text/javascript" src="js/User.js"></script>
 	<script type="text/javascript" src="js/script.js"></script>
 </head>
 <body>
@@ -25,8 +26,8 @@
 				<input type="text" name="search" id="search" placeholder="Search or start new chat">
 			</div>
 			<div class="chat-list">
-				<ul>
-					<li>
+				<ul id="chat-list-ul">
+					<!-- <li>
 						<div class="contact-profile-picture-left">
 							<img src="images/contact-profile-picture.jpg" >
 						</div>
@@ -49,7 +50,7 @@
 							</div>
 							<div class="time">9:00 PM</div>
 						</div>
-					</li>
+					</li> -->
 				</ul>
 			</div>
 		</aside>

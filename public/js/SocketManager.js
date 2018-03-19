@@ -1,10 +1,11 @@
 function SocketManager() {
     var socket = io();
 
-    this.newUser = function(username, successCallback, errorCallback) {
-        socket.emit('setUsername', username);
-        socket.on('userSet', successCallback);
-        socket.on('userExists', errorCallback);
+    this.login = function(user, successCallback, errorCallback) {
+        console.log(user.getJSON());
+        socket.emit('login', user.getJSON());
+        socket.on('loginSuccess', successCallback);
+        socket.on('loginFailure', errorCallback);
     }
 
     this.sendMessage = function(message) {
@@ -13,5 +14,9 @@ function SocketManager() {
 
     this.receiveMessage = function(callback) {
         socket.on('newmsg', callback);
+    }
+
+    this.updateContactList = function(callback) {
+        socket.on('refreshContactList', callback);
     }
 }
