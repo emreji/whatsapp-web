@@ -63,8 +63,29 @@ io.on('connection', function(socket) {
         }
     });
 
+    // data contains receiver id and message.
+    // sender id can be inferred from socket.id 
     socket.on('msg', function(data) {
-        io.sockets.emit('newmsg', data);
+        var sender = loggedInUsers.find(function (loggedInUser) {
+            return (loggedInUser.id == socket.id);
+        });
+
+        var receiver = loggedInUsers.find(function (loggedInUser) {
+            return (loggedInUser.id == data.receiverId);
+        });
+
+        var receiverSocket = io.sockets.sockets[data.receiverId];
+
+        if (sender == null || receiver == null) {  
+            console.log('Something went wrong: Sender: ' + sender + ', Receiver: ' + receiver);
+            return;
+        }
+
+        console.log(sender.userName + " sent a message to " + receiver.userName + " => " + data.message);
+        receiverSocket.emit('newmsg', {
+            sender: sender,
+            message: data.message
+        });
     });
 });
 

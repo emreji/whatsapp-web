@@ -1,14 +1,18 @@
 var user;
 var socketManager = new SocketManager();
+var chats = {}; // {phoneNumber => chat}
+var selectedChatUser;
+var currentUserId;
 
 promptUsername();
 
 function promptUsername() {
 	while(userName == null || userName == "") {
 		var userName = this.prompt("Please enter your name");
-		var newUser = new User(userName, "416-312-1932");
+		var newUser = new User(userName, Math.random().toString(36).substr(2, 9));
 		socketManager.login(newUser, function(user) {
 			document.getElementById("user").innerHTML = user.userName;
+			currentUserId = user.id;
 		}, function(error) {
 			alert(error);
 		});
@@ -18,28 +22,25 @@ function promptUsername() {
 function sendMessage() {
 	var message = $('#new-message').val();
 	if (message != "" && message != null) {
-		socketManager.sendMessage(message);
-		scrollToBottomOfChatWindow()
+		socketManager.sendMessage(selectedChatUser.id, message);
+		
+		var currentDate = new Date();
+		var timeIndicator = (currentDate.getHours() < 12) ? "AM" : "PM";
+		var displayTime = currentDate.getHours() % 12 + ":" + currentDate.getMinutes() + " " + timeIndicator;
+		var chatBubble = new ChatBubble(message, displayTime, false);
+		
+		addToChatBubblesAndRenderUI(selectedChatUser, chatBubble);
 	}
 }
 
-var displayMessage = function(message) {
+// message has sender(id, name and phone number) and message body
+var displayIncomingMessage = function(message) {
 	var currentDate = new Date();
 	var timeIndicator = (currentDate.getHours() < 12) ? "AM" : "PM";
 	var displayTime = currentDate.getHours() % 12 + ":" + currentDate.getMinutes() + " " + timeIndicator;
+	var chatBubble = new ChatBubble(message.message, displayTime, true);
 	
-	var chatBubbleDiv = document.createElement('div');
-	var messageSpan = document.createElement('span');
-	var timeDiv = document.createElement('div');
-	timeDiv.innerHTML = displayTime;
-
-	chatBubbleDiv.appendChild(messageSpan);
-	messageSpan.innerHTML = message.message;
-	messageSpan.appendChild(timeDiv);
-
-	chatBubbleDiv.setAttribute("class", "chat-bubble chat-bubble-sent");
-	$('.chat-window').append(chatBubbleDiv);
-	$('#new-message').val("");
+	addToChatBubblesAndRenderUI(message.sender, chatBubble);
 }
 
 var refreshContactList = function(contacts) {
@@ -47,22 +48,52 @@ var refreshContactList = function(contacts) {
 	chatList.innerHTML = '';
 
 	contacts.forEach(contact => {
-		var loggedInUser = createChatContact(contact.userName);
+		var loggedInUser = createChatContact(contact);
 		loggedInUser.user = contact;
-
+		if(chats[contact.phoneNumber] == null) {
+			chats[contact.phoneNumber] = new Chat(contact, []);
+		}
 		loggedInUser.addEventListener("click", function() {
-			console.log(this);
+			selectedChatUser = this.user;
+			updateCurrentChat(selectedChatUser);
+			loadPreviousChat(selectedChatUser);
 		});
 
 		chatList.appendChild(loggedInUser);
 	});
 }
 
-socketManager.receiveMessage(displayMessage);
+socketManager.receiveMessage(displayIncomingMessage);
 socketManager.updateContactList(refreshContactList);
 
-function createChatContact(name) {
+function updateCurrentChat(user) {
+	console.log("Update current chat:");
+	console.log(user);
+	var currentChatName = document.getElementById("contact-name");
+	currentChatName.innerHTML = user.userName;
+}
+
+// load previous chats from this 'user'
+function loadPreviousChat(user) {
+	$('.chat-window').empty();
+	
+	chats[user.phoneNumber].chatBubbles.forEach(chatBubble =>
+		createChatBubbleDiv(chatBubble)	
+	);
+	scrollToBottomOfChatWindow();
+}
+
+function addToChatBubblesAndRenderUI(sender, chatBubble) {
+	if(chats[sender.phoneNumber]) {
+		chats[sender.phoneNumber].addChatBubble(chatBubble);
+		createChatBubbleDiv(chatBubble);
+	}
+	scrollToBottomOfChatWindow()
+}
+
+function createChatContact(user) {
 	var li = document.createElement('li');
+	li.id = user.id;
 
 	var contactImageDiv = document.createElement('div');
 	contactImageDiv.className = "contact-profile-picture-left";
@@ -80,7 +111,7 @@ function createChatContact(name) {
 
 	var chatContactNameDiv = document.createElement('div');
 	chatContactNameDiv.className = "contact-name";
-	chatContactNameDiv.innerHTML = name;
+	chatContactNameDiv.innerHTML = user.userName;
 
 	var lastChatMessageDiv = document.createElement('div');
 	lastChatMessageDiv.className = "last-chat-message";
@@ -102,4 +133,20 @@ function createChatContact(name) {
 function scrollToBottomOfChatWindow() {
 	var chatWindow = document.getElementById("chat-window");
 	chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
+function createChatBubbleDiv(chatBubble) {
+	var chatBubbleDiv = document.createElement('div');
+	var messageSpan = document.createElement('span');
+	var timeDiv = document.createElement('div');
+	timeDiv.innerHTML = chatBubble.time;
+
+	chatBubbleDiv.appendChild(messageSpan);
+	messageSpan.innerHTML = chatBubble.message;
+	messageSpan.appendChild(timeDiv);
+
+	var classForMessage = (chatBubble.isReceived) ? "chat-bubble-received" : "chat-bubble-sent";
+	chatBubbleDiv.setAttribute("class", "chat-bubble " + classForMessage);
+	$('.chat-window').append(chatBubbleDiv);
+	$('#new-message').val("");
 }

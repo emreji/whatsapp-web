@@ -8,8 +8,8 @@ function SocketManager() {
         socket.on('loginFailure', errorCallback);
     }
 
-    this.sendMessage = function(message) {
-        socket.emit('msg', {message: message});
+    this.sendMessage = function(id, message) {
+        socket.emit('msg', { receiverId: id, message: message });
     }
 
     this.receiveMessage = function(callback) {
