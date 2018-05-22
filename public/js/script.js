@@ -5,11 +5,23 @@ var selectedChatUser;
 var currentUserId;
 var newUser;
 
-promptUsername();
+var modal = document.getElementById("login-form");
+var loginButton = document.getElementById("login-button");
+var userNameOnLoad = document.getElementById("username").value;
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
 
-function promptUsername() {
-	while(userName == null || userName == "") {
-		var userName = this.prompt("Please enter your name");
+modal.style.display = "block";
+
+function setUsername() {
+	
+	var userName = document.getElementById("username").value;
+	console.log("Username :" + userName);
+	if(userName != "") {
+		modal.style.display = "none";
 		newUser = new User(userName, Math.random().toString(36).substr(2, 9));
 		socketManager.login(newUser, function(user) {
 			document.getElementById("user").innerHTML = user.userName;
@@ -17,6 +29,9 @@ function promptUsername() {
 		}, function(error) {
 			alert(error);
 		});
+	} else {
+		document.getElementsByClassName('error')[0].innerHTML = "Please provide a username to continue.";
+		promptUsername();
 	}
 }
 

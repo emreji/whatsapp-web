@@ -11,10 +11,27 @@
 	<script type="text/javascript" src="js/User.js"></script>
 	<script type="text/javascript" src="js/ChatBubble.js"></script>
 	<script type="text/javascript" src="js/Chat.js"></script>
-	<script type="text/javascript" src="js/script.js"></script>
+	<script type="text/javascript" src="js/script.js" defer></script>
 </head>
 <body>
 	<div id="container">
+		<div id="login-form" class="modal">
+			<span onclick="document.getElementById('login-form').style.display='none'" 
+			class="close" title="Close Modal">&times;</span>
+			<div class="modal-content animate">
+				<div class="imgcontainer">
+				  <img src="./images/profile-picture.jpg" alt="Avatar" class="avatar">
+				</div>
+			
+				<div class="container-form">
+				  <div><label class="error"></label></div>
+				  <label for="username"><b>Username</b></label>
+				  <input type="text" placeholder="Enter Username" id="username" name="username" onkeydown = "if (event.keyCode == 13) setUsername()" required>
+			
+				  <button onclick="setUsername()" id="login-button">Login</button>
+				</div>
+			</div>
+		</div>
 		<aside>
 			<div class="profile-bar">
 				<img src="images/profile-picture.jpg" class="profile-picture">
@@ -56,7 +73,7 @@
 				</ul>
 			</div>
 		</aside>
-		<main>
+		<main id="chat-main">
 			<div class="chat-details">
 				<div class="contact-profile-picture-main">
 					<img src="images/contact-profile-picture.jpg" >
@@ -107,6 +124,9 @@
 				</div>
 			</div>
 		</main>
+		<div id="welcome">
+			Welcome to Whatsapp-web. 
+		</div>
 	</div>
 </body>
 </html>
