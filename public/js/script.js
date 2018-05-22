@@ -3,13 +3,14 @@ var socketManager = new SocketManager();
 var chats = {}; // {phoneNumber => chat}
 var selectedChatUser;
 var currentUserId;
+var newUser;
 
 promptUsername();
 
 function promptUsername() {
 	while(userName == null || userName == "") {
 		var userName = this.prompt("Please enter your name");
-		var newUser = new User(userName, Math.random().toString(36).substr(2, 9));
+		newUser = new User(userName, Math.random().toString(36).substr(2, 9));
 		socketManager.login(newUser, function(user) {
 			document.getElementById("user").innerHTML = user.userName;
 			currentUserId = user.id;
@@ -48,18 +49,20 @@ var refreshContactList = function(contacts) {
 	chatList.innerHTML = '';
 
 	contacts.forEach(contact => {
-		var loggedInUser = createChatContact(contact);
-		loggedInUser.user = contact;
-		if(chats[contact.phoneNumber] == null) {
-			chats[contact.phoneNumber] = new Chat(contact, []);
-		}
-		loggedInUser.addEventListener("click", function() {
-			selectedChatUser = this.user;
-			updateCurrentChat(selectedChatUser);
-			loadPreviousChat(selectedChatUser);
-		});
+		if(contact.phoneNumber != newUser.phoneNumber) {
+			var loggedInUser = createChatContact(contact);
+			loggedInUser.user = contact;
+			if(chats[contact.phoneNumber] == null) {
+				chats[contact.phoneNumber] = new Chat(contact, []);
+			}
+			loggedInUser.addEventListener("click", function() {
+				selectedChatUser = this.user;
+				updateCurrentChat(selectedChatUser);
+				loadPreviousChat(selectedChatUser);
+			});
 
-		chatList.appendChild(loggedInUser);
+			chatList.appendChild(loggedInUser);
+		}
 	});
 }
 
