@@ -36,8 +36,8 @@ io.on('connection', function(socket) {
         }
 
         var allUsers = [];
-            loggedInUsers.forEach(user => {
-                allUsers.push(user.getJSON());
+        loggedInUsers.forEach(user => {
+            allUsers.push(user.getJSON());
         });
 
         io.sockets.emit("refreshContactList", allUsers);
@@ -89,6 +89,6 @@ io.on('connection', function(socket) {
     });
 });
 
-server.listen(3000, function() {
-    console.log('server running!', __dirname);
+server.listen(process.env.PORT || 5000, function() { 
+    console.log('server running!', __dirname); 
 });
