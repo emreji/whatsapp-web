@@ -7,7 +7,9 @@ var newUser;
 
 var modal = document.getElementById("login-form");
 var loginButton = document.getElementById("login-button");
+var currentChatName = document.getElementById("contact-name");
 var userNameOnLoad = document.getElementById("username").value;
+
 window.onclick = function(event) {
     if (event.target == modal) {
         modal.style.display = "none";
@@ -44,7 +46,7 @@ function sendMessage() {
 		var timeIndicator = (currentDate.getHours() < 12) ? "AM" : "PM";
 		var displayTime = currentDate.getHours() % 12 + ":" + currentDate.getMinutes() + " " + timeIndicator;
 		var chatBubble = new ChatBubble(message, displayTime, false);
-		
+		document.getElementById("new-message").value = "";
 		addToChatBubblesAndRenderUI(selectedChatUser, chatBubble);
 	}
 }
@@ -55,14 +57,16 @@ var displayIncomingMessage = function(message) {
 	var timeIndicator = (currentDate.getHours() < 12) ? "AM" : "PM";
 	var displayTime = currentDate.getHours() % 12 + ":" + currentDate.getMinutes() + " " + timeIndicator;
 	var chatBubble = new ChatBubble(message.message, displayTime, true);
-	
+	selectedChatUser = message.sender;
+	updateCurrentChat(selectedChatUser);
+	loadPreviousChat(selectedChatUser);
+	console.log("Sender :" + message.sender.phoneNumber)
 	addToChatBubblesAndRenderUI(message.sender, chatBubble);
 }
 
 var refreshContactList = function(contacts) {
 	var chatList = document.getElementById("chat-list-ul");
 	chatList.innerHTML = '';
-
 	contacts.forEach(contact => {
 		if(contact.phoneNumber != newUser.phoneNumber) {
 			var loggedInUser = createChatContact(contact);
@@ -85,9 +89,7 @@ socketManager.receiveMessage(displayIncomingMessage);
 socketManager.updateContactList(refreshContactList);
 
 function updateCurrentChat(user) {
-	console.log("Update current chat:");
-	console.log(user);
-	var currentChatName = document.getElementById("contact-name");
+	
 	currentChatName.innerHTML = user.userName;
 }
 
@@ -145,6 +147,7 @@ function createChatContact(user) {
 
 	li.appendChild(contactImageDiv);
 	li.appendChild(chatBoxDiv);
+	
 	return li;
 }
 
@@ -166,5 +169,5 @@ function createChatBubbleDiv(chatBubble) {
 	var classForMessage = (chatBubble.isReceived) ? "chat-bubble-received" : "chat-bubble-sent";
 	chatBubbleDiv.setAttribute("class", "chat-bubble " + classForMessage);
 	$('.chat-window').append(chatBubbleDiv);
-	$('#new-message').val("");
+	
 }

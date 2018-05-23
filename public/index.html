@@ -26,7 +26,7 @@
 				<div class="container-form">
 				  <div><label class="error"></label></div>
 				  <label for="username"><b>Username</b></label>
-				  <input type="text" placeholder="Enter Username" id="username" name="username" onkeydown = "if (event.keyCode == 13) setUsername()" required>
+				  <input type="text" placeholder="Enter Username" id="username" name="username" onkeydown = "if (event.keyCode == 13) setUsername()" autofocus>
 			
 				  <button onclick="setUsername()" id="login-button">Login</button>
 				</div>
@@ -80,7 +80,7 @@
 				</div>
 				<div class="chat-status">
 					<div id="contact-name" class="contact-name">
-						Marie Bernatt
+						
 					</div>
 					<div class="contact-online-status">
 						Online
@@ -124,9 +124,6 @@
 				</div>
 			</div>
 		</main>
-		<div id="welcome">
-			Welcome to Whatsapp-web. 
-		</div>
 	</div>
 </body>
 </html>
