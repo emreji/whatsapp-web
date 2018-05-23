@@ -9,6 +9,8 @@ var lastSelectedChat;
 var modal = document.getElementById("login-form");
 var loginButton = document.getElementById("login-button");
 var currentChatName = document.getElementById("contact-name");
+var currentcontactPicture = document.getElementById("contact-profile-picture");
+var currentChatOnlineStatus = document.getElementById("contact-online-status");
 var userNameOnLoad = document.getElementById("username").value;
 
 modal.style.display = "block";
@@ -100,6 +102,7 @@ socketManager.updateContactList(refreshContactList);
 
 function updateCurrentChat(user) {
 	currentChatName.innerHTML = user.userName;
+	
 }
 
 // load previous chats from this 'user'
@@ -130,7 +133,7 @@ function createChatContact(user) {
 	contactImageDiv.className = "contact-profile-picture-left";
 
 	var contactImage = document.createElement("img");
-	contactImage.src = "images/contact-profile-picture.jpg";
+	contactImage.src = "./images/profile-picture.png";
 
 	contactImageDiv.appendChild(contactImage);
 
