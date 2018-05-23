@@ -4,7 +4,6 @@ var chats = {}; // {phoneNumber => chat}
 var selectedChatUser;
 var currentUserId;
 var newUser;
-var contactsCount;
 var lastSelectedChat;
 
 var modal = document.getElementById("login-form");
@@ -17,7 +16,6 @@ modal.style.display = "block";
 function setUsername() {
 	
 	var userName = document.getElementById("username").value;
-	console.log("Username :" + userName);
 	if(userName != "") {
 		modal.style.display = "none";
 		newUser = new User(userName, Math.random().toString(36).substr(2, 9));
@@ -54,26 +52,33 @@ var displayIncomingMessage = function(message) {
 	var displayTime = currentDate.getHours() % 12 + ":" + currentDate.getMinutes() + " " + timeIndicator;
 	var chatBubble = new ChatBubble(message.message, displayTime, true);
 	
-	socketManager.updateContactList(refreshContactList);
-	
 	addToChatBubblesAndRenderUI(message.sender, chatBubble);
+	console.log(document.getElementById("last-chat-message-" + message.sender.phoneNumber))
+	document.getElementById("last-chat-message-" + message.sender.phoneNumber).innerHTML = message.message;
+	if(message.sender.phoneNumber != selectedChatUser.phoneNumber) {
+		document.getElementById("notify-" + message.sender.phoneNumber).className = "notifyNewMessage";
+	}
 }
 
 var refreshContactList = function(contacts) {
 	var chatList = document.getElementById("chat-list-ul");
 	chatList.innerHTML = '';
-	contactsCount = 0;
+	
+	if(selectedChatUser == null && contacts.length > 0) {
+		selectedChatUser = contacts[0];
+	} 
+
 	contacts.forEach(contact => {
-		contactsCount++;
 		if(contact.phoneNumber != newUser.phoneNumber) {
 			var loggedInUser = createChatContact(contact);
 			loggedInUser.user = contact;
 			if(chats[contact.phoneNumber] == null) {
 				chats[contact.phoneNumber] = new Chat(contact, []);
 			}
-
+			
 			loggedInUser.addEventListener("click", function() {
 				this.style.backgroundColor = "#e4e4e4";
+				document.getElementById("notify-" + this.user.phoneNumber).className = "";
 				selectedChatUser = this.user;
 				updateCurrentChat(selectedChatUser);
 				loadPreviousChat(selectedChatUser);
@@ -139,9 +144,13 @@ function createChatContact(user) {
 	chatContactNameDiv.className = "contact-name";
 	chatContactNameDiv.innerHTML = user.userName;
 
+	var notifyDiv = document.createElement("span");
+	notifyDiv.id = "notify-" + user.phoneNumber;
+
 	var lastChatMessageDiv = document.createElement('div');
 	lastChatMessageDiv.className = "last-chat-message";
-	lastChatMessageDiv.innerHTML = "Hi";
+	lastChatMessageDiv.id = "last-chat-message-" + user.phoneNumber;
+	lastChatMessageDiv.innerHTML = "Online";
 
 	var chatTimeDiv = document.createElement('div');
 	chatTimeDiv.className = "time";
@@ -150,6 +159,7 @@ function createChatContact(user) {
 	chatContactDiv.appendChild(lastChatMessageDiv);
 	chatBoxDiv.appendChild(chatContactDiv);
 	chatBoxDiv.appendChild(chatTimeDiv);
+	chatBoxDiv.appendChild(notifyDiv);
 
 	li.appendChild(contactImageDiv);
 	li.appendChild(chatBoxDiv);
