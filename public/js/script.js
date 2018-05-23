@@ -12,12 +12,6 @@ var loginButton = document.getElementById("login-button");
 var currentChatName = document.getElementById("contact-name");
 var userNameOnLoad = document.getElementById("username").value;
 
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-
 modal.style.display = "block";
 
 function setUsername() {
