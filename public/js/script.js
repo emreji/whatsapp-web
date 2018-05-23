@@ -4,6 +4,8 @@ var chats = {}; // {phoneNumber => chat}
 var selectedChatUser;
 var currentUserId;
 var newUser;
+var contactsCount;
+var lastSelectedChat;
 
 var modal = document.getElementById("login-form");
 var loginButton = document.getElementById("login-button");
@@ -57,27 +59,36 @@ var displayIncomingMessage = function(message) {
 	var timeIndicator = (currentDate.getHours() < 12) ? "AM" : "PM";
 	var displayTime = currentDate.getHours() % 12 + ":" + currentDate.getMinutes() + " " + timeIndicator;
 	var chatBubble = new ChatBubble(message.message, displayTime, true);
-	selectedChatUser = message.sender;
-	updateCurrentChat(selectedChatUser);
-	loadPreviousChat(selectedChatUser);
-	console.log("Sender :" + message.sender.phoneNumber)
+	
+	socketManager.updateContactList(refreshContactList);
+	
 	addToChatBubblesAndRenderUI(message.sender, chatBubble);
 }
 
 var refreshContactList = function(contacts) {
 	var chatList = document.getElementById("chat-list-ul");
 	chatList.innerHTML = '';
+	contactsCount = 0;
 	contacts.forEach(contact => {
+		contactsCount++;
 		if(contact.phoneNumber != newUser.phoneNumber) {
 			var loggedInUser = createChatContact(contact);
 			loggedInUser.user = contact;
 			if(chats[contact.phoneNumber] == null) {
 				chats[contact.phoneNumber] = new Chat(contact, []);
 			}
+
 			loggedInUser.addEventListener("click", function() {
+				this.style.backgroundColor = "#e4e4e4";
 				selectedChatUser = this.user;
 				updateCurrentChat(selectedChatUser);
 				loadPreviousChat(selectedChatUser);
+
+				if (lastSelectedChat != null) {
+					lastSelectedChat.style.backgroundColor = "#FFFFFF";
+				}
+				
+				lastSelectedChat = this
 			});
 
 			chatList.appendChild(loggedInUser);
@@ -89,7 +100,6 @@ socketManager.receiveMessage(displayIncomingMessage);
 socketManager.updateContactList(refreshContactList);
 
 function updateCurrentChat(user) {
-	
 	currentChatName.innerHTML = user.userName;
 }
 
@@ -106,7 +116,9 @@ function loadPreviousChat(user) {
 function addToChatBubblesAndRenderUI(sender, chatBubble) {
 	if(chats[sender.phoneNumber]) {
 		chats[sender.phoneNumber].addChatBubble(chatBubble);
-		createChatBubbleDiv(chatBubble);
+		if(sender.phoneNumber == selectedChatUser.phoneNumber) {
+			createChatBubbleDiv(chatBubble);
+		}
 	}
 	scrollToBottomOfChatWindow()
 }
